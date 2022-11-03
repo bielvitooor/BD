@@ -1,3 +1,4 @@
+CREATE DATABASE adrianob_grupo09;
 USE adrianob_grupo09;
 CREATE TABLE Sexo (
   id_sexo INT NOT NULL,
@@ -11,8 +12,9 @@ CREATE TABLE Pessoas (
   cpf BIGINT(11) NOT NULL UNIQUE,
   email VARCHAR(80) NULL,
   telefone VARCHAR(15) NULL,
+  dt_nasc date NOT NULL,
   sexo_id_sexo INT NOT NULL,
-  PRIMARY KEY (id_pessoas, sexo_id_sexo),
+  PRIMARY KEY (id_pessoas),
   CONSTRAINT fk_Pessoas_sexo1
     FOREIGN KEY (sexo_id_sexo)
     REFERENCES sexo (id_sexo)
@@ -34,7 +36,7 @@ CREATE TABLE Setor (
   id_setor INT UNIQUE NOT NULL,
   descricao_sala VARCHAR(45) NOT NULL,
   Cargo_id_cargo INT NOT NULL,
-  PRIMARY KEY (id_setor, Cargo_id_cargo),
+  PRIMARY KEY (id_setor),
   CONSTRAINT fk_Setor_Cargo1
     FOREIGN KEY (Cargo_id_cargo)
     REFERENCES Cargo(id_cargo)
@@ -50,7 +52,7 @@ CREATE TABLE Curso (
   nome VARCHAR(45) NOT NULL,
   cargo_horaria INT NOT NULL,
   turno_id_turno INT NOT NULL,
-  PRIMARY KEY (id_curso, turno_id_turno),
+  PRIMARY KEY (id_curso),
   CONSTRAINT fk_curso_turno1
     FOREIGN KEY (turno_id_turno)
     REFERENCES turno (id_turno)
@@ -62,7 +64,7 @@ CREATE TABLE Usuario(
   curso_id_curso INT NOT NULL,
   Cargo_id_cargo INT NOT NULL,
   Registros_num_registro INT UNSIGNED NOT NULL,
-  PRIMARY KEY (id_usuario, Pessoas_id_pessoas, Pessoas_sexo_id_sexo, curso_id_curso, Cargo_id_cargo, Registros_num_registro),
+  PRIMARY KEY (id_usuario),
   CONSTRAINT fk_Usuario_Pessoas1
     FOREIGN KEY (Pessoas_id_pessoas , Pessoas_sexo_id_sexo)
     REFERENCES Pessoas (id_pessoas , sexo_id_sexo),
@@ -88,17 +90,20 @@ CREATE TABLE Pessoas_has_Usuario (
     FOREIGN KEY (Usuario_id_usuario)
     REFERENCES Usuario (id_usuario)
     );
-CREATE TABLE IF NOT EXISTS Setor_has_Registros(
+CREATE TABLE Setor_has_Registros(
   Setor_id_setor INT UNSIGNED NOT NULL,
   Setor_Cargo_id_cargo INT NOT NULL,
   Registros_num_registro INT UNSIGNED NOT NULL,
   PRIMARY KEY (Setor_id_setor, Setor_Cargo_id_cargo, Registros_num_registro),
   CONSTRAINT fk_Setor_has_Registros_Setor1
     FOREIGN KEY (Setor_id_setor , Setor_Cargo_id_cargo)
-    REFERENCES Setor (id_setor , Cargo_id_cargo)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    REFERENCES Setor (id_setor , Cargo_id_cargo),
   CONSTRAINT fk_Setor_has_Registros_Registros1
     FOREIGN KEY (Registros_num_registro)
     REFERENCES Registros (num_registro)
     );
+    INSERT INTO adrianob_grupo09.Sexo(id_sexo,descricao_sexo) values(1,"masculino");
+   INSERT INTO adrianob_grupo09.Sexo(id_sexo,descricao_sexo) values(2,"Feminino");
+    Select * from Pessoas;    
+    INSERT INTO adrianob_grupo09.Pessoas(nome,matricula,cpf,email,telefone,dt_nasc,sexo_id_sexo) values("Gabriel",20203930249303, 11109046781,"gabriel@gmail.com","(62)98607-3404","2004-03-19",1);
+    alter table Pessoas;
