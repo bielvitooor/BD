@@ -1,105 +1,105 @@
 CREATE DATABASE adrianob_grupo09;
 USE adrianob_grupo09;
 CREATE TABLE Sexo (
-  id_sexo INT NOT NULL,
-  descricao_sexo VARCHAR(12) NOT NULL,
-  PRIMARY KEY (id_sexo)
-  );
+id_sexo INT NOT NULL,
+descricao_sexo VARCHAR(12) NOT NULL,
+PRIMARY KEY (id_sexo)
+);
 CREATE TABLE Pessoa (
-  id_pessoa INT NOT NULL AUTO_INCREMENT UNIQUE,
-  nome VARCHAR(50) NOT NULL,
-  matricula BIGINT NOT NULL UNIQUE,
-  cpf BIGINT(11) NOT NULL UNIQUE,
-  email VARCHAR(80) NULL,
-  telefone VARCHAR(15) NULL,
-  dt_nasc date NOT NULL,
-  sexo_id_sexo INT NOT NULL,
-  PRIMARY KEY (id_pessoa),
-  CONSTRAINT fk_Pessoa_sexo1
-    FOREIGN KEY (sexo_id_sexo)
-    REFERENCES sexo (id_sexo)
-    );
+id_pessoa INT NOT NULL AUTO_INCREMENT UNIQUE,
+nome VARCHAR(50) NOT NULL,
+matricula BIGINT NOT NULL UNIQUE,
+cpf BIGINT(11) NOT NULL UNIQUE,
+email VARCHAR(80) NULL,
+telefone VARCHAR(15) NULL,
+dt_nasc date NOT NULL,
+sexo_id_sexo INT NOT NULL,
+PRIMARY KEY (id_pessoa),
+CONSTRAINT fk_Pessoa_sexo1
+FOREIGN KEY (sexo_id_sexo)
+REFERENCES sexo (id_sexo)
+);
 CREATE TABLE Registros (
-  num_registro INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  dat_registro DATE NOT NULL,
-  registro_entrada DATETIME NOT NULL,
-  registro_saida DATETIME NOT NULL,
-  Usuario_id_usuario INT NOT NULL,
-  Usuario_curso_id_curso INT NOT NULL,
-  Usuario_Cargo_id_cargo INT NOT NULL,
-  Usuario_Pessoa_id_pessoa INT NOT NULL,
+num_registro INT UNSIGNED NOT NULL AUTO_INCREMENT,
+dat_registro DATE NOT NULL,
+registro_entrada DATETIME NOT NULL,
+registro_saida DATETIME NOT NULL,
+Usuario_id_usuario INT NOT NULL,
+Usuario_curso_id_curso INT NOT NULL,
+Usuario_Cargo_id_cargo INT NOT NULL,
+Usuario_Pessoa_id_pessoa INT NOT NULL,
 Usuario_Pessoa_sexo_id_sexo INT NOT NULL,
-  PRIMARY KEY (num_registro),
-  CONSTRAINT fk_Registro_Usuario1
-    FOREIGN KEY (Usuario_id_usuario , Usuario_curso_id_curso, Usuario_Cargo_id_cargo , Usuario_Pessoa_id_pessoa, Usuario_Pessoa_sexo_id_sexo)
-    REFERENCES Usuario(id_usuario,curso_id_curso,Cargo_id_cargo,Pessoa_id_pessoa,Pessoa_sexo_id_sexo)
+PRIMARY KEY (num_registro),
+CONSTRAINT fk_Registro_Usuario1
+FOREIGN KEY (Usuario_id_usuario , Usuario_curso_id_curso, Usuario_Cargo_id_cargo , Usuario_Pessoa_id_pessoa, Usuario_Pessoa_sexo_id_sexo)
+REFERENCES Usuario(id_usuario,curso_id_curso,Cargo_id_cargo,Pessoa_id_pessoa,Pessoa_sexo_id_sexo)
   );
   
 CREATE TABLE Cargo (
-  id_cargo INT UNIQUE NOT NULL,
-  nome_cargo VARCHAR(40) NOT NULL,
-  PRIMARY KEY (id_cargo)
-  );
+id_cargo INT UNIQUE NOT NULL,
+nome_cargo VARCHAR(40) NOT NULL,
+PRIMARY KEY (id_cargo)
+);
 CREATE TABLE Setor (
-  id_setor INT UNIQUE NOT NULL,
-  descricao_sala VARCHAR(45) NOT NULL,
-  Cargo_id_cargo INT NOT NULL,
-  PRIMARY KEY (id_setor),
-  CONSTRAINT fk_Setor_Cargo1
-    FOREIGN KEY (Cargo_id_cargo)
-    REFERENCES Cargo(id_cargo)
-    );
+id_setor INT UNIQUE NOT NULL,
+descricao_sala VARCHAR(45) NOT NULL,
+Cargo_id_cargo INT NOT NULL,
+PRIMARY KEY (id_setor),
+CONSTRAINT fk_Setor_Cargo1
+FOREIGN KEY (Cargo_id_cargo)
+REFERENCES Cargo(id_cargo)
+);
 CREATE TABLE Turno (
-  id_turno INT NOT NULL AUTO_INCREMENT,
-  descricao VARCHAR(20) NOT NULL,
-  PRIMARY KEY (id_turno)
-  );
+id_turno INT NOT NULL AUTO_INCREMENT,
+descricao VARCHAR(20) NOT NULL,
+PRIMARY KEY (id_turno)
+);
 
 CREATE TABLE Curso (
-  id_curso INT NOT NULL,
-  nome VARCHAR(45) NOT NULL,
-  cargo_horaria INT NOT NULL,
-  turno_id_turno INT NOT NULL,
-  PRIMARY KEY (id_curso),
-  CONSTRAINT fk_curso_turno1
-    FOREIGN KEY (turno_id_turno)
-    REFERENCES turno (id_turno)
-    );
+id_curso INT NOT NULL,
+nome VARCHAR(45) NOT NULL,
+cargo_horaria INT NOT NULL,
+turno_id_turno INT NOT NULL,
+PRIMARY KEY (id_curso),
+CONSTRAINT fk_curso_turno1
+FOREIGN KEY (turno_id_turno)
+REFERENCES turno (id_turno)
+);
 CREATE TABLE Usuario(
-  id_usuario INT NOT NULL,
-  curso_id_curso INT NOT NULL,
-  Cargo_id_cargo INT NOT NULL,
-  Pessoa_id_pessoa INT NOT NULL,
-  Pessoa_sexo_id_sexo INT NOT NULL,
-  PRIMARY KEY (id_usuario),
-  CONSTRAINT fk_UsuarioPessoa_curso1
-    FOREIGN KEY (curso_id_curso)
-    REFERENCES curso(id_curso),
-  CONSTRAINT fk_Usuario_Cargo1
-    FOREIGN KEY (Cargo_id_cargo)
-    REFERENCES Cargo (id_cargo),
+id_usuario INT NOT NULL,
+curso_id_curso INT NOT NULL,
+Cargo_id_cargo INT NOT NULL,
+Pessoa_id_pessoa INT NOT NULL,
+Pessoa_sexo_id_sexo INT NOT NULL,
+PRIMARY KEY (id_usuario),
+CONSTRAINT fk_UsuarioPessoa_curso1
+FOREIGN KEY (curso_id_curso)
+REFERENCES curso(id_curso),
+CONSTRAINT fk_Usuario_Cargo1
+FOREIGN KEY (Cargo_id_cargo)
+REFERENCES Cargo (id_cargo),
 CONSTRAINT fk_Usuario_Pessoa1
-    FOREIGN KEY (Pessoa_id_pessoa , Pessoa_sexo_id_sexo)
-    REFERENCES Pessoa (id_pessoa ,sexo_id_sexo)
-    );
+FOREIGN KEY (Pessoa_id_pessoa , Pessoa_sexo_id_sexo)
+REFERENCES Pessoa (id_pessoa ,sexo_id_sexo)
+);
 
 CREATE TABLE Setor_has_Registros(
-  Registro_num_registro INT UNSIGNED NOT NULL,
-  Registro_Usuario_id_usuario INT NOT NULL,
-  Registro_Usuario_curso_id_curso INT NOT NULL,
-  Registro_Usuario_Cargo_id_cargo INT NOT NULL,
-  Registro_Usuario_Pessoa_id_pessoa INT NOT NULL,
-  Registro_Usuario_Pessoa_sexo_id_sexo INT NOT NULL,
-  Setor_id_setor INT UNSIGNED NOT NULL,
-  Setor_Cargo_id_cargo INT NOT NULL,
-  PRIMARY KEY (Registro_num_registro, Registro_Usuario_id_usuario,Registro_Usuario_curso_id_curso, Registro_Usuario_Cargo_id_cargo, Registro_Usuario_Pessoa_id_pessoa,Registro_Usuario_Pessoa_sexo_id_sexo, Setor_id_setor, Setor_Cargo_id_cargo),
-  CONSTRAINT fk_Registro_has_Setor_Registro1
-    FOREIGN KEY (Registro_num_registro , Registro_Usuario_id_usuario , Registro_Usuario_curso_id_curso , Registro_Usuario_Cargo_id_cargo , Registro_Usuario_Pessoa_id_pessoa , Registro_Usuario_Pessoa_sexo_id_sexo)
-    REFERENCES Registro (num_registro , Usuario_id_usuario , Usuario_curso_id_curso ,Usuario_Cargo_id_cargo , Usuario_Pessoa_id_pessoa,Usuario_Pessoa_sexo_id_sexo),
-  CONSTRAINT fk_Registro_has_Setor_Setor1
-    FOREIGN KEY (Setor_id_setor , Setor_Cargo_id_cargo)
-    REFERENCES Setor (id_setor , Cargo_id_cargo)
-    );
+Registro_num_registro INT UNSIGNED NOT NULL,
+Registro_Usuario_id_usuario INT NOT NULL,
+Registro_Usuario_curso_id_curso INT NOT NULL,
+Registro_Usuario_Cargo_id_cargo INT NOT NULL,
+Registro_Usuario_Pessoa_id_pessoa INT NOT NULL,
+Registro_Usuario_Pessoa_sexo_id_sexo INT NOT NULL,
+Setor_id_setor INT UNSIGNED NOT NULL,
+Setor_Cargo_id_cargo INT NOT NULL,
+PRIMARY KEY (Registro_num_registro, Registro_Usuario_id_usuario,Registro_Usuario_curso_id_curso, Registro_Usuario_Cargo_id_cargo, Registro_Usuario_Pessoa_id_pessoa,Registro_Usuario_Pessoa_sexo_id_sexo, Setor_id_setor, Setor_Cargo_id_cargo),
+CONSTRAINT fk_Registro_has_Setor_Registro1
+FOREIGN KEY (Registro_num_registro , Registro_Usuario_id_usuario , Registro_Usuario_curso_id_curso , Registro_Usuario_Cargo_id_cargo , Registro_Usuario_Pessoa_id_pessoa , Registro_Usuario_Pessoa_sexo_id_sexo)
+REFERENCES Registro (num_registro , Usuario_id_usuario , Usuario_curso_id_curso ,Usuario_Cargo_id_cargo , Usuario_Pessoa_id_pessoa,Usuario_Pessoa_sexo_id_sexo),
+CONSTRAINT fk_Registro_has_Setor_Setor1
+FOREIGN KEY (Setor_id_setor , Setor_Cargo_id_cargo)
+REFERENCES Setor (id_setor , Cargo_id_cargo)
+);
 /*sexo*/
 INSERT INTO adrianob_grupo09.Sexo(id_sexo,descricao_sexo) values(1,"Feminino");
 INSERT INTO adrianob_grupo09.Sexo(id_sexo,descricao_sexo) values(2,"Masculino");
