@@ -5,6 +5,7 @@ id_sexo INT NOT NULL,
 descricao_sexo VARCHAR(12) NOT NULL,
 PRIMARY KEY (id_sexo)
 );
+
 CREATE TABLE Pessoa (
 id_pessoa INT NOT NULL AUTO_INCREMENT UNIQUE,
 nome VARCHAR(50) NOT NULL,
@@ -19,6 +20,7 @@ CONSTRAINT fk_Pessoa_sexo1
 FOREIGN KEY (sexo_id_sexo)
 REFERENCES sexo (id_sexo)
 );
+
 CREATE TABLE Registros (
 num_registro INT UNSIGNED NOT NULL AUTO_INCREMENT,
 dat_registro DATE NOT NULL,
@@ -33,13 +35,14 @@ PRIMARY KEY (num_registro),
 CONSTRAINT fk_Registro_Usuario1
 FOREIGN KEY (Usuario_id_usuario , Usuario_curso_id_curso, Usuario_Cargo_id_cargo , Usuario_Pessoa_id_pessoa, Usuario_Pessoa_sexo_id_sexo)
 REFERENCES Usuario(id_usuario,curso_id_curso,Cargo_id_cargo,Pessoa_id_pessoa,Pessoa_sexo_id_sexo)
-  );
+);
   
 CREATE TABLE Cargo (
 id_cargo INT UNIQUE NOT NULL,
 nome_cargo VARCHAR(40) NOT NULL,
 PRIMARY KEY (id_cargo)
 );
+
 CREATE TABLE Setor (
 id_setor INT UNIQUE NOT NULL,
 descricao_sala VARCHAR(45) NOT NULL,
@@ -65,6 +68,7 @@ CONSTRAINT fk_curso_turno1
 FOREIGN KEY (turno_id_turno)
 REFERENCES turno (id_turno)
 );
+
 CREATE TABLE Usuario(
 id_usuario INT NOT NULL,
 curso_id_curso INT NOT NULL,
@@ -100,6 +104,7 @@ CONSTRAINT fk_Registro_has_Setor_Setor1
 FOREIGN KEY (Setor_id_setor , Setor_Cargo_id_cargo)
 REFERENCES Setor (id_setor , Cargo_id_cargo)
 );
+
 /*sexo*/
 INSERT INTO adrianob_grupo09.Sexo(id_sexo,descricao_sexo) values(1,"Feminino");
 INSERT INTO adrianob_grupo09.Sexo(id_sexo,descricao_sexo) values(2,"Masculino");
