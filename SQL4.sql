@@ -15,6 +15,7 @@ CREATE TABLE Curso (
   CONSTRAINT fk_curso_turno1
     FOREIGN KEY (turno_id_turno)
     REFERENCES turno (id_turno)
+    ON DELETE CASCADE ON UPDATE CASCADE
     );
 
 CREATE TABLE Sexo (
@@ -35,6 +36,7 @@ CREATE TABLE Pessoa (
   CONSTRAINT fk_Pessoa_sexo1
     FOREIGN KEY (sexo_id_sexo)
     REFERENCES sexo (id_sexo)
+    ON DELETE CASCADE ON UPDATE CASCADE
     );
     CREATE TABLE Cargo (
   id_cargo INT UNIQUE NOT NULL,
@@ -44,6 +46,7 @@ CREATE TABLE Pessoa (
   CONSTRAINT fk_Setor_Cargo1
 	FOREIGN KEY(Setor_id_setor)
     REFERENCES Setor(id_setor)
+    ON DELETE CASCADE ON UPDATE CASCADE
   );
   CREATE TABLE Setor (
   id_setor INT UNIQUE NOT NULL,
@@ -64,6 +67,7 @@ CREATE TABLE Registro (
   CONSTRAINT fk_Registro_Usuario1
     FOREIGN KEY (Usuario_id_usuario , Usuario_curso_id_curso , Usuario_Pessoa_id_pessoas , Usuario_Pessoa_sexo_id_sexo, Usuario_Cargo_id_cargo , Usuario_Cargo_Setor_id_setor)
     REFERENCES Usuario (id_usuario , curso_id_curso , Pessoa_id_pessoas , Pessoa_sexo_id_sexo , Cargo_id_cargo1 ,Cargo_Setor_id_setor)
+    ON DELETE CASCADE ON UPDATE CASCADE
   );
 CREATE TABLE Usuario(
   id_usuario INT NOT NULL auto_increment,
@@ -75,13 +79,16 @@ CREATE TABLE Usuario(
   PRIMARY KEY (id_usuario, curso_id_curso, Pessoa_id_pessoas, Pessoa_sexo_id_sexo, Cargo_id_cargo, Cargo_Setor_id_setor),
   CONSTRAINT fk_Usuario_curso1
     FOREIGN KEY (curso_id_curso)
-    REFERENCES Curso (id_curso),
+    REFERENCES Curso (id_curso)
+    ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT fk_Usuario_Pessoa1
     FOREIGN KEY (Pessoa_id_pessoas , Pessoa_sexo_id_sexo)
-    REFERENCES Pessoa (id_pessoas , sexo_id_sexo),
+    REFERENCES Pessoa (id_pessoas , sexo_id_sexo)
+    ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT fk_Usuario_Cargo1
     FOREIGN KEY (Cargo_id_cargo , Cargo_Setor_id_setor)
     REFERENCES Cargo (id_cargo , Setor_id_setor)
+    ON DELETE CASCADE ON UPDATE CASCADE
     );  
 
 
@@ -205,4 +212,5 @@ UPDATE Registro SET registro_saida=now() WHERE num_registro=9;
 UPDATE Registro SET registro_saida=now() WHERE num_registro=10;
 SELECT * FROM Pessoa ORDER BY(nome)ASC;
 SELECT id_pessoa,nome,matricula,dt_nasc FROM Pessoa WHERE dt_nasc="2004-03-19";
-DELETE FROM Pessoa WHERE id_pessoa=3;
+DELETE  FROM Pessoa WHERE id_pessoa=3;
+SELECT id_pessoa,nome,matricula,dt_nasc FROM Pessoa WHERE id_pessoa=3;
