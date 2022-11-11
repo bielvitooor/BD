@@ -64,7 +64,7 @@ CREATE TABLE Registro (
   Usuario_Pessoa_sexo_id_sexo INT NOT NULL,
   Usuario_Cargo_id_cargo INT NOT NULL,
   Usuario_Cargo_Setor_id_setor INT UNSIGNED NOT NULL,
-  PRIMARY KEY (num_registro,Usuario_id_usuario, Usuario_curso_id_curso, Usuario_Pessoa_id_pessoas, Usuario_Pessoa_sexo_id_sexo, Usuario_Cargo_id_cargo, Usuario_Cargo_Setor_id_setor),
+  PRIMARY KEY (num_registro),
   CONSTRAINT fk_Registro_Usuario
     FOREIGN KEY (Usuario_id_usuario , Usuario_curso_id_curso , Usuario_Pessoa_id_pessoas , Usuario_Pessoa_sexo_id_sexo, Usuario_Cargo_id_cargo , Usuario_Cargo_Setor_id_setor)
     REFERENCES Usuario (id_usuario , curso_id_curso , Pessoa_id_pessoas , Pessoa_sexo_id_sexo , Cargo_id_cargo1 ,Cargo_Setor_id_setor)
@@ -77,7 +77,7 @@ CREATE TABLE Usuario(
   Pessoa_sexo_id_sexo INT NOT NULL,
   Cargo_id_cargo INT NOT NULL,
   Cargo_Setor_id_setor INT UNSIGNED NOT NULL,
-  PRIMARY KEY (id_usuario, curso_id_curso, Pessoa_id_pessoas, Pessoa_sexo_id_sexo, Cargo_id_cargo, Cargo_Setor_id_setor),
+  PRIMARY KEY (id_usuario),
   CONSTRAINT fk_Usuario_curso
     FOREIGN KEY (curso_id_curso)
     REFERENCES Curso (id_curso)
