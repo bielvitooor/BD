@@ -203,3 +203,6 @@ UPDATE Registro SET registro_saida=now() WHERE num_registro=7;
 UPDATE Registro SET registro_saida=now() WHERE num_registro=8;
 UPDATE Registro SET registro_saida=now() WHERE num_registro=9;
 UPDATE Registro SET registro_saida=now() WHERE num_registro=10;
+SELECT * FROM Pessoa ORDER BY(nome)ASC;
+SELECT id_pessoa,nome,matricula,dt_nasc FROM Pessoa WHERE dt_nasc="2004-03-19";
+DELETE FROM Pessoa WHERE id_pessoa=3;
