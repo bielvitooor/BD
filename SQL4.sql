@@ -1,135 +1,118 @@
 CREATE DATABASE adrianob_grupo09;
 USE adrianob_grupo09;
-CREATE TABLE Sexo (
-id_sexo INT NOT NULL,
-descricao_sexo VARCHAR(12) NOT NULL,
-PRIMARY KEY (id_sexo)
-);
-
-CREATE TABLE Pessoa (
-id_pessoa INT NOT NULL AUTO_INCREMENT UNIQUE,
-nome VARCHAR(50) NOT NULL,
-matricula BIGINT NOT NULL UNIQUE,
-cpf BIGINT(11) NOT NULL UNIQUE,
-email VARCHAR(80) NULL,
-telefone VARCHAR(15) NULL,
-dt_nasc date NOT NULL,
-sexo_id_sexo INT NOT NULL,
-PRIMARY KEY (id_pessoa),
-CONSTRAINT fk_Pessoa_sexo1
-FOREIGN KEY (sexo_id_sexo)
-REFERENCES sexo (id_sexo)
-);
-
-CREATE TABLE Registros (
-num_registro INT UNSIGNED NOT NULL AUTO_INCREMENT,
-dat_registro DATE NOT NULL,
-registro_entrada DATETIME NOT NULL,
-registro_saida DATETIME NOT NULL,
-Usuario_id_usuario INT NOT NULL,
-Usuario_curso_id_curso INT NOT NULL,
-Usuario_Cargo_id_cargo INT NOT NULL,
-Usuario_Pessoa_id_pessoa INT NOT NULL,
-Usuario_Pessoa_sexo_id_sexo INT NOT NULL,
-PRIMARY KEY (num_registro),
-CONSTRAINT fk_Registro_Usuario1
-FOREIGN KEY (Usuario_id_usuario , Usuario_curso_id_curso, Usuario_Cargo_id_cargo , Usuario_Pessoa_id_pessoa, Usuario_Pessoa_sexo_id_sexo)
-REFERENCES Usuario(id_usuario,curso_id_curso,Cargo_id_cargo,Pessoa_id_pessoa,Pessoa_sexo_id_sexo)
-);
-  
-CREATE TABLE Cargo (
-id_cargo INT UNIQUE NOT NULL,
-nome_cargo VARCHAR(40) NOT NULL,
-PRIMARY KEY (id_cargo)
-);
-
-CREATE TABLE Setor (
-id_setor INT UNIQUE NOT NULL,
-descricao_sala VARCHAR(45) NOT NULL,
-Cargo_id_cargo INT NOT NULL,
-PRIMARY KEY (id_setor),
-CONSTRAINT fk_Setor_Cargo1
-FOREIGN KEY (Cargo_id_cargo)
-REFERENCES Cargo(id_cargo)
-);
 CREATE TABLE Turno (
-id_turno INT NOT NULL AUTO_INCREMENT,
-descricao VARCHAR(20) NOT NULL,
-PRIMARY KEY (id_turno)
-);
+  id_turno INT NOT NULL AUTO_INCREMENT,
+  descricao VARCHAR(20) NOT NULL,
+  PRIMARY KEY (id_turno)
+  );
 
 CREATE TABLE Curso (
-id_curso INT NOT NULL,
-nome VARCHAR(45) NOT NULL,
-cargo_horaria INT NOT NULL,
-turno_id_turno INT NOT NULL,
-PRIMARY KEY (id_curso),
-CONSTRAINT fk_curso_turno1
-FOREIGN KEY (turno_id_turno)
-REFERENCES turno (id_turno)
-);
+  id_curso INT NOT NULL,
+  nome VARCHAR(45) NOT NULL,
+  cargo_horaria INT NOT NULL,
+  turno_id_turno INT NOT NULL,
+  PRIMARY KEY (id_curso),
+  CONSTRAINT fk_curso_turno1
+    FOREIGN KEY (turno_id_turno)
+    REFERENCES turno (id_turno)
+    );
 
+CREATE TABLE Sexo (
+  id_sexo INT NOT NULL,
+  descricao_sexo VARCHAR(12) NOT NULL,
+  PRIMARY KEY (id_sexo)
+  );
+CREATE TABLE Pessoa (
+  id_pessoa INT NOT NULL AUTO_INCREMENT UNIQUE,
+  nome VARCHAR(50) NOT NULL,
+  matricula BIGINT NOT NULL UNIQUE,
+  cpf BIGINT(11) NOT NULL UNIQUE,
+  email VARCHAR(80) NULL,
+  telefone VARCHAR(15) NULL,
+  dt_nasc date NOT NULL,
+  sexo_id_sexo INT NOT NULL,
+  PRIMARY KEY (id_pessoa),
+  CONSTRAINT fk_Pessoa_sexo1
+    FOREIGN KEY (sexo_id_sexo)
+    REFERENCES sexo (id_sexo)
+    );
+    CREATE TABLE Cargo (
+  id_cargo INT UNIQUE NOT NULL,
+  nome_cargo VARCHAR(40) NOT NULL,
+  Setor_id_setor INT NOT NULL,
+  PRIMARY KEY (id_cargo),
+  CONSTRAINT fk_Setor_Cargo1
+	FOREIGN KEY(Setor_id_setor)
+    REFERENCES Setor(id_setor)
+  );
+  CREATE TABLE Setor (
+  id_setor INT UNIQUE NOT NULL,
+  descricao_sala VARCHAR(45) NOT NULL,
+  PRIMARY KEY (id_setor)
+    );
+CREATE TABLE Registro (
+ num_registro INT UNIQUE NOT NULL AUTO_INCREMENT,
+  registro_entrada TIMESTAMP NOT NULL,
+  registro_saida TIMESTAMP NOT NULL,
+  Usuario_id_usuario INT NOT NULL,
+  Usuario_curso_id_curso INT NOT NULL,
+  Usuario_Pessoa_id_pessoas INT NOT NULL,
+  Usuario_Pessoa_sexo_id_sexo INT NOT NULL,
+  Usuario_Cargo_id_cargo INT NOT NULL,
+  Usuario_Cargo_Setor_id_setor INT UNSIGNED NOT NULL,
+  PRIMARY KEY (num_registro,Usuario_id_usuario, Usuario_curso_id_curso, Usuario_Pessoa_id_pessoas, Usuario_Pessoa_sexo_id_sexo, Usuario_Cargo_id_cargo, Usuario_Cargo_Setor_id_setor),
+  CONSTRAINT fk_Registro_Usuario1
+    FOREIGN KEY (Usuario_id_usuario , Usuario_curso_id_curso , Usuario_Pessoa_id_pessoas , Usuario_Pessoa_sexo_id_sexo, Usuario_Cargo_id_cargo , Usuario_Cargo_Setor_id_setor)
+    REFERENCES Usuario (id_usuario , curso_id_curso , Pessoa_id_pessoas , Pessoa_sexo_id_sexo , Cargo_id_cargo1 ,Cargo_Setor_id_setor)
+  );
 CREATE TABLE Usuario(
-id_usuario INT NOT NULL,
-curso_id_curso INT NOT NULL,
-Cargo_id_cargo INT NOT NULL,
-Pessoa_id_pessoa INT NOT NULL,
-Pessoa_sexo_id_sexo INT NOT NULL,
-PRIMARY KEY (id_usuario),
-CONSTRAINT fk_UsuarioPessoa_curso1
-FOREIGN KEY (curso_id_curso)
-REFERENCES curso(id_curso),
-CONSTRAINT fk_Usuario_Cargo1
-FOREIGN KEY (Cargo_id_cargo)
-REFERENCES Cargo (id_cargo),
-CONSTRAINT fk_Usuario_Pessoa1
-FOREIGN KEY (Pessoa_id_pessoa , Pessoa_sexo_id_sexo)
-REFERENCES Pessoa (id_pessoa ,sexo_id_sexo)
-);
+  id_usuario INT NOT NULL auto_increment,
+  curso_id_curso INT NOT NULL,
+  Pessoa_id_pessoas INT NOT NULL UNIQUE,
+  Pessoa_sexo_id_sexo INT NOT NULL,
+  Cargo_id_cargo INT NOT NULL,
+  Cargo_Setor_id_setor INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id_usuario, curso_id_curso, Pessoa_id_pessoas, Pessoa_sexo_id_sexo, Cargo_id_cargo, Cargo_Setor_id_setor),
+  CONSTRAINT fk_Usuario_curso1
+    FOREIGN KEY (curso_id_curso)
+    REFERENCES Curso (id_curso),
+  CONSTRAINT fk_Usuario_Pessoa1
+    FOREIGN KEY (Pessoa_id_pessoas , Pessoa_sexo_id_sexo)
+    REFERENCES Pessoa (id_pessoas , sexo_id_sexo),
+  CONSTRAINT fk_Usuario_Cargo1
+    FOREIGN KEY (Cargo_id_cargo , Cargo_Setor_id_setor)
+    REFERENCES Cargo (id_cargo , Setor_id_setor)
+    );  
 
-CREATE TABLE Setor_has_Registros(
-Registro_num_registro INT UNSIGNED NOT NULL,
-Registro_Usuario_id_usuario INT NOT NULL,
-Registro_Usuario_curso_id_curso INT NOT NULL,
-Registro_Usuario_Cargo_id_cargo INT NOT NULL,
-Registro_Usuario_Pessoa_id_pessoa INT NOT NULL,
-Registro_Usuario_Pessoa_sexo_id_sexo INT NOT NULL,
-Setor_id_setor INT UNSIGNED NOT NULL,
-Setor_Cargo_id_cargo INT NOT NULL,
-PRIMARY KEY (Registro_num_registro, Registro_Usuario_id_usuario,Registro_Usuario_curso_id_curso, Registro_Usuario_Cargo_id_cargo, Registro_Usuario_Pessoa_id_pessoa,Registro_Usuario_Pessoa_sexo_id_sexo, Setor_id_setor, Setor_Cargo_id_cargo),
-CONSTRAINT fk_Registro_has_Setor_Registro1
-FOREIGN KEY (Registro_num_registro , Registro_Usuario_id_usuario , Registro_Usuario_curso_id_curso , Registro_Usuario_Cargo_id_cargo , Registro_Usuario_Pessoa_id_pessoa , Registro_Usuario_Pessoa_sexo_id_sexo)
-REFERENCES Registro (num_registro , Usuario_id_usuario , Usuario_curso_id_curso ,Usuario_Cargo_id_cargo , Usuario_Pessoa_id_pessoa,Usuario_Pessoa_sexo_id_sexo),
-CONSTRAINT fk_Registro_has_Setor_Setor1
-FOREIGN KEY (Setor_id_setor , Setor_Cargo_id_cargo)
-REFERENCES Setor (id_setor , Cargo_id_cargo)
-);
+
 
 /*sexo*/
 INSERT INTO adrianob_grupo09.Sexo(id_sexo,descricao_sexo) values(1,"Feminino");
 INSERT INTO adrianob_grupo09.Sexo(id_sexo,descricao_sexo) values(2,"Masculino");
+/*Sala*/
+INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala) values(7,"direcao");
+INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala) values(13,"tesouraria");
+INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala) values(18,"secretaria");
+INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala) values(33,"coordenacao");
+INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala) values(78,"salaDosProfessores");
+INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala) values(5,"salaDeAula");
+INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala) values(21,"patio");
+
 /*cargo*/
-INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo) values(11,"diretor");
-INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo) values(22,"tesourero");
-INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo) values(33,"secretario");
-INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo) values(44,"coordenador");
-INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo) values(55,"professor");
-INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo) values(66,"aluno");
-INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo) values(77,"visitante");
+INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo,Setor_id_setor) values(11,"diretor",7);
+INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo,Setor_id_setor) values(22,"tesourero",13);
+INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo,Setor_id_setor) values(33,"secretario",18);
+INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo,Setor_id_setor) values(44,"coordenador",33);
+INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo,Setor_id_setor) values(55,"professor",78);
+INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo,Setor_id_setor) values(66,"aluno",5);
+INSERT INTO adrianob_grupo09.Cargo(id_cargo,nome_cargo,Setor_id_setor) values(77,"visitante",21);
 /*turno*/
 INSERT INTO adrianob_grupo09.Turno(id_turno, descricao) values(1,"Matutino");
 INSERT INTO adrianob_grupo09.Turno(id_turno, descricao) values(2,"Vespertino");
 INSERT INTO adrianob_grupo09.Turno(id_turno, descricao) values(3,"Noturno");
 INSERT INTO adrianob_grupo09.Turno(id_turno, descricao) values(4,"Integral");
 INSERT INTO adrianob_grupo09.Turno(id_turno, descricao) values(5,"EAD");
-/*insert salas*/
-INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala,Cargo_id_cargo) values(7,"direcao",11);
-INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala,Cargo_id_cargo) values(13,"tesouraria",22);
-INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala,Cargo_id_cargo) values(18,"secretaria",33);
-INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala,Cargo_id_cargo) values(33,"coordenacao",44);
-INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala,Cargo_id_cargo) values(78,"salaDosProfessores",55);
-INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala,Cargo_id_cargo) values(5,"salaDeAula",66);
-INSERT INTO adrianob_grupo09.Setor(id_setor,descricao_sala,Cargo_id_cargo) values(21,"patio",77);
+
 /*insert cursos*/
 INSERT INTO adrianob_grupo09.Curso(id_curso,nome,cargo_horaria, turno_id_turno) values(1,"Sistemas",3600,3);
 INSERT INTO adrianob_grupo09.Curso(id_curso,nome,cargo_horaria, turno_id_turno) values(2,"Biologia",3600,5);
@@ -188,3 +171,35 @@ INSERT INTO adrianob_grupo09.Pessoa(nome,matricula,cpf,email,telefone,dt_nasc,se
 INSERT INTO adrianob_grupo09.Pessoa(nome,matricula,cpf,email,telefone,dt_nasc,sexo_id_sexo) values("Paulo",20221032020348,71150977025,"Paulo@gmail.com","(62) 992574479","2004-05-03",2);
 INSERT INTO adrianob_grupo09.Pessoa(nome,matricula,cpf,email,telefone,dt_nasc,sexo_id_sexo) values("Thalia",20221032020349,71150976826,"Thalia@gmail.com","(62) 992574480","2004-05-04",1);
 INSERT INTO adrianob_grupo09.Pessoa(nome,matricula,cpf,email,telefone,dt_nasc,sexo_id_sexo) values("Adrino",20221032020350,71150976926,"Adrino@gmail.com","(62) 992574481","2004-05-05",2);
+/*USUARIO*/
+INSERT INTO Usuario(Pessoa_id_pessoas,curso_id_curso,Pessoa_sexo_id_sexo,Cargo_id_cargo,Cargo_Setor_id_setor)VALUES(1,1,2,66,5);
+INSERT INTO Usuario(Pessoa_id_pessoas,curso_id_curso,Pessoa_sexo_id_sexo,Cargo_id_cargo,Cargo_Setor_id_setor)VALUES(2,2,2,55,78);
+INSERT INTO Usuario(Pessoa_id_pessoas,curso_id_curso,Pessoa_sexo_id_sexo,Cargo_id_cargo,Cargo_Setor_id_setor)VALUES(3,4,2,77,21);
+INSERT INTO Usuario(Pessoa_id_pessoas,curso_id_curso,Pessoa_sexo_id_sexo,Cargo_id_cargo,Cargo_Setor_id_setor)VALUES(4,5,1,55,78);
+INSERT INTO Usuario(Pessoa_id_pessoas,curso_id_curso,Pessoa_sexo_id_sexo,Cargo_id_cargo,Cargo_Setor_id_setor)VALUES(6,6,2,33,18);
+INSERT INTO Usuario(Pessoa_id_pessoas,curso_id_curso,Pessoa_sexo_id_sexo,Cargo_id_cargo,Cargo_Setor_id_setor)VALUES(7,1,2,44,33);
+INSERT INTO Usuario(Pessoa_id_pessoas,curso_id_curso,Pessoa_sexo_id_sexo,Cargo_id_cargo,Cargo_Setor_id_setor)VALUES(8,6,2,22,13);
+INSERT INTO Usuario(Pessoa_id_pessoas,curso_id_curso,Pessoa_sexo_id_sexo,Cargo_id_cargo,Cargo_Setor_id_setor)VALUES(11,4,1,33,18);
+INSERT INTO Usuario(Pessoa_id_pessoas,curso_id_curso,Pessoa_sexo_id_sexo,Cargo_id_cargo,Cargo_Setor_id_setor)VALUES(14,3,1,77,21);
+INSERT INTO Usuario(Pessoa_id_pessoas,curso_id_curso,Pessoa_sexo_id_sexo,Cargo_id_cargo,Cargo_Setor_id_setor)VALUES(17,5,2,22,13);
+/*Registro*/
+INSERT INTO Registro(registro_entrada,Usuario_id_usuario,Usuario_curso_id_curso,Usuario_Pessoa_id_pessoas,Usuario_Pessoa_sexo_id_sexo,Usuario_Cargo_id_cargo,Usuario_Cargo_Setor_id_setor)VALUES(now(),1,1,1,2,66,5);
+INSERT INTO Registro(registro_entrada,Usuario_id_usuario,Usuario_curso_id_curso,Usuario_Pessoa_id_pessoas,Usuario_Pessoa_sexo_id_sexo,Usuario_Cargo_id_cargo,Usuario_Cargo_Setor_id_setor)VALUES(now(),2,2,2,2,55,78);
+INSERT INTO Registro(registro_entrada,Usuario_id_usuario,Usuario_curso_id_curso,Usuario_Pessoa_id_pessoas,Usuario_Pessoa_sexo_id_sexo,Usuario_Cargo_id_cargo,Usuario_Cargo_Setor_id_setor)VALUES(now(),3,4,3,2,77,21);
+INSERT INTO Registro(registro_entrada,Usuario_id_usuario,Usuario_curso_id_curso,Usuario_Pessoa_id_pessoas,Usuario_Pessoa_sexo_id_sexo,Usuario_Cargo_id_cargo,Usuario_Cargo_Setor_id_setor)VALUES(now(),4,5,4,1,55,78);
+INSERT INTO Registro(registro_entrada,Usuario_id_usuario,Usuario_curso_id_curso,Usuario_Pessoa_id_pessoas,Usuario_Pessoa_sexo_id_sexo,Usuario_Cargo_id_cargo,Usuario_Cargo_Setor_id_setor)VALUES(now(),5,6,6,2,33,18);
+INSERT INTO Registro(registro_entrada,Usuario_id_usuario,Usuario_curso_id_curso,Usuario_Pessoa_id_pessoas,Usuario_Pessoa_sexo_id_sexo,Usuario_Cargo_id_cargo,Usuario_Cargo_Setor_id_setor)VALUES(now(),6,1,7,2,44,33);
+INSERT INTO Registro(registro_entrada,Usuario_id_usuario,Usuario_curso_id_curso,Usuario_Pessoa_id_pessoas,Usuario_Pessoa_sexo_id_sexo,Usuario_Cargo_id_cargo,Usuario_Cargo_Setor_id_setor)VALUES(now(),7,6,8,2,22,13);
+INSERT INTO Registro(registro_entrada,Usuario_id_usuario,Usuario_curso_id_curso,Usuario_Pessoa_id_pessoas,Usuario_Pessoa_sexo_id_sexo,Usuario_Cargo_id_cargo,Usuario_Cargo_Setor_id_setor)VALUES(now(),8,4,11,1,33,18);
+INSERT INTO Registro(registro_entrada,Usuario_id_usuario,Usuario_curso_id_curso,Usuario_Pessoa_id_pessoas,Usuario_Pessoa_sexo_id_sexo,Usuario_Cargo_id_cargo,Usuario_Cargo_Setor_id_setor)VALUES(now(),9,3,14,1,77,21);
+INSERT INTO Registro(registro_entrada,Usuario_id_usuario,Usuario_curso_id_curso,Usuario_Pessoa_id_pessoas,Usuario_Pessoa_sexo_id_sexo,Usuario_Cargo_id_cargo,Usuario_Cargo_Setor_id_setor)VALUES(now(),10,5,17,2,22,13);
+UPDATE Registro SET registro_saida=now() WHERE num_registro=1;
+UPDATE Registro SET registro_saida=now() WHERE num_registro=2;
+UPDATE Registro SET registro_saida=now() WHERE num_registro=3;
+UPDATE Registro SET registro_saida=now() WHERE num_registro=4;
+UPDATE Registro SET registro_saida=now() WHERE num_registro=5;
+UPDATE Registro SET registro_saida=now() WHERE num_registro=6;
+UPDATE Registro SET registro_saida=now() WHERE num_registro=7;
+UPDATE Registro SET registro_saida=now() WHERE num_registro=8;
+UPDATE Registro SET registro_saida=now() WHERE num_registro=9;
+UPDATE Registro SET registro_saida=now() WHERE num_registro=10;
